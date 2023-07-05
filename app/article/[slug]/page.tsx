@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 
-export const dynamicParams = false;
+// export const dynamicParams = false;
 
 // Return a list of `params` to populate the [slug] dynamic segment
 export async function generateStaticParams() {
@@ -21,8 +21,8 @@ export default async function Page({ params }: { params: { slug: string } }) {
     `https://639040c665ff4183110d7bdd.mockapi.io/blogs/${slug}`
   );
 
-  // this is specific to the mockapi endpoint
-  // the only way to check if no content is available at a specific endpoint
+  //   this is specific to the mockapi endpoint
+  //   easiest way to check if no content is available at a specific endpoint
   if (res.status === 500) {
     return notFound();
   }
