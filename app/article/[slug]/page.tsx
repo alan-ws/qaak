@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 
-export const dynamicParams = false;
+export const dynamicParams = true;
 
 async function getData() {
   return await (
