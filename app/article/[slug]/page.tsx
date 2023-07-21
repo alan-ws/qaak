@@ -1,31 +1,33 @@
 import { notFound } from "next/navigation";
 
-// export const dynamicParams = false;
+export const dynamicParams = false;
 
-// Return a list of `params` to populate the [slug] dynamic segment
-export async function generateStaticParams() {
-  const posts = await (
-    await fetch("https://639040c665ff4183110d7bdd.mockapi.io/blogs")
+async function getData() {
+  return await (
+    await fetch("https://6450fdc8e1f6f1bb22a4b4c7.mockapi.io/post")
   ).json();
+}
+
+export async function generateStaticParams() {
+  const posts = await getData();
 
   return posts.map((post: any) => ({
     slug: post.id,
   }));
 }
 
-// Multiple versions of this page will be statically generated
-// using the `params` returned by `generateStaticParams`
 export default async function Page({ params }: { params: { slug: string } }) {
+  const posts = await getData();
+
+  // lookup the id in the blob, if none found, throw notFound()
+  if (posts.find((v: any) => v.id === params.slug) === undefined) {
+    notFound();
+  }
+
   const { slug } = params;
   const res = await fetch(
-    `https://639040c665ff4183110d7bdd.mockapi.io/blogs/${slug}`
+    `https://6450fdc8e1f6f1bb22a4b4c7.mockapi.io/post/${slug}`
   );
-
-  //   this is specific to the mockapi endpoint
-  //   easiest way to check if no content is available at a specific endpoint
-  if (res.status === 500) {
-    return notFound();
-  }
 
   const content = await res.json();
 
